@@ -2,7 +2,7 @@
 node_modules/
 
 # Paquetes generados por npm pack
-eslint-falopa-*.tgz
+eslint-config-efe13-*.tgz
 
 # Logs
 npm-debug.log*

@@ -8,6 +8,7 @@ import ora from "ora";
 import { depsByFramework } from "../src/deps.js";
 import { detectFramework } from "../src/detect-framework.js";
 import { detectPackageManager } from "../src/detect-package-manager.js";
+import { ensureLintScript } from "../src/ensure-lint-script.js";
 import { generateEslintConfig } from "../src/generate-config.js";
 
 async function main() {
@@ -32,6 +33,24 @@ async function main() {
     framework = response.framework;
   }
 
+  // Crear archivo eslint.config.mjs (con confirmación si ya existe)
+  const configPath = "eslint.config.mjs";
+  const configExists = fs.existsSync(configPath);
+
+  if (configExists) {
+    const { overwrite } = await inquirer.prompt({
+      type: "confirm",
+      name: "overwrite",
+      message: `Ya existe ${configPath}. ¿Sobreescribir?`,
+      default: false,
+    });
+
+    if (!overwrite) {
+      console.log(chalk.yellow(`Se mantuvo el ${configPath} existente.`));
+      return;
+    }
+  }
+
   const spinner = ora("Instalando dependencias...").start();
 
   try {
@@ -51,30 +70,14 @@ async function main() {
     process.exit(1);
   }
 
-  // Crear archivo eslint.config.mjs (con confirmación si ya existe)
-  const configPath = "eslint.config.mjs";
-  if (fs.existsSync(configPath)) {
-    const { overwrite } = await inquirer.prompt({
-      type: "confirm",
-      name: "overwrite",
-      message: `Ya existe ${configPath}. ¿Sobreescribir?`,
-      default: false,
-    });
-
-    if (!overwrite) {
-      console.log(chalk.yellow(`Se mantuvo el ${configPath} existente.`));
-    } else {
-      fs.writeFileSync(configPath, generateEslintConfig(framework));
-      console.log(chalk.green(`Archivo ${configPath} sobreescrito con éxito`));
-    }
-  } else {
-    try {
-      fs.writeFileSync(configPath, generateEslintConfig(framework));
-      console.log(chalk.green(`Archivo ${configPath} creado con éxito`));
-    } catch {
-      console.error(chalk.red(`Error creando el archivo ${configPath}`));
-      process.exit(1);
-    }
+  try {
+    fs.writeFileSync(configPath, generateEslintConfig(framework));
+    console.log(
+      chalk.green(`Archivo ${configPath} ${configExists ? "sobreescrito" : "creado"} con éxito`),
+    );
+  } catch {
+    console.error(chalk.red(`Error creando el archivo ${configPath}`));
+    process.exit(1);
   }
 
   // Añadir script lint a package.json
@@ -84,10 +87,13 @@ async function main() {
       console.warn(chalk.yellow("No se encontró package.json, no se agregó script lint."));
     } else {
       const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-      pkg.scripts = pkg.scripts || {};
-      pkg.scripts.lint = "eslint .";
-      fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-      console.log(chalk.green("Script 'lint' agregado a package.json"));
+
+      if (ensureLintScript(pkg)) {
+        fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+        console.log(chalk.green("Script 'lint' agregado a package.json"));
+      } else {
+        console.log(chalk.yellow("Se mantuvo el script 'lint' existente."));
+      }
     }
   } catch {
     console.warn(chalk.yellow("No se pudo modificar package.json para añadir el script lint."));

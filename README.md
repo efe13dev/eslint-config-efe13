@@ -1,4 +1,4 @@
- # eslint-config-goncy
+ # eslint-config-efe13
 
 CLI para configurar rápidamente ESLint + Prettier (Flat Config) en proyectos Next.js, Vite o backend-ts (Node/TypeScript).
  
@@ -11,13 +11,13 @@ CLI para configurar rápidamente ESLint + Prettier (Flat Config) en proyectos Ne
 Ejecuta el CLI en la raíz de tu proyecto con tu gestor preferido:
 
 ```bash
-npx eslint-config-goncy
+npx eslint-config-efe13
 # o
-pnpm dlx eslint-config-goncy
+pnpm dlx eslint-config-efe13
 # o
-yarn dlx eslint-config-goncy
+yarn dlx eslint-config-efe13
 # o
-bunx eslint-config-goncy
+bunx eslint-config-efe13
 ```
 
 El CLI intentará detectar el framework automáticamente. Si no puede detectarlo (o es ambiguo), te pedirá que selecciones uno (`nextjs` | `vite` | `backend-ts`) y hará la configuración automáticamente.
@@ -41,7 +41,7 @@ Si tu proyecto fue creado con Vite, elimina el archivo `eslint.config.js` que Vi
 - Detecta tu gestor de paquetes.
 - Instala las dependencias necesarias.
 - Genera `eslint.config.mjs` con configuración Flat + Prettier.
-- Añade el script `"lint": "eslint ."` a `package.json` si existe.
+- Añade el script `"lint": "eslint ."` a `package.json` si existe y aún no define `lint`.
 
 ## Lint
 

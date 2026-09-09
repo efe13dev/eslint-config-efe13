@@ -1,6 +1,14 @@
 # Changelog
 
-Todas las notas de cambios para `eslint-config-goncy`.
+Todas las notas de cambios para `eslint-config-efe13`.
+
+## [1.1.4] - 2026-09-09
+
+- chore: Renombra el paquete a `eslint-config-efe13`.
+- fix: Solicita confirmación antes de instalar dependencias cuando ya existe `eslint.config.mjs`.
+- fix: Conserva el script `lint` existente en `package.json`.
+- chore: Actualiza dependencias compatibles y corrige las vulnerabilidades reportadas por npm.
+- test: Cubre la creación y conservación del script `lint`.
 
 ## [1.1.0] - 2025-08-15
 

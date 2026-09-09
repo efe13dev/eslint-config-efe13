@@ -1,9 +1,9 @@
 {
-  "name": "eslint-config-goncy",
-  "version": "1.1.3",
+  "name": "eslint-config-efe13",
+  "version": "1.1.4",
   "type": "module",
   "bin": {
-    "eslint-config-goncy": "bin/index.js"
+    "eslint-config-efe13": "bin/index.js"
   },
   "files": [
     "bin/",
@@ -32,21 +32,21 @@
   "description": "Configuración de ESLint + Prettier inspirada en Goncy con un CLI para proyectos Next.js, Vite y backend-ts (Node/TypeScript).",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/efe13dev/eslint-config-goncy.git"
+    "url": "git+https://github.com/efe13dev/eslint-config-efe13.git"
   },
   "bugs": {
-    "url": "https://github.com/efe13dev/eslint-config-goncy/issues"
+    "url": "https://github.com/efe13dev/eslint-config-efe13/issues"
   },
-  "homepage": "https://github.com/efe13dev/eslint-config-goncy#readme",
+  "homepage": "https://github.com/efe13dev/eslint-config-efe13#readme",
   "dependencies": {
-    "chalk": "^5.3.0",
-    "inquirer": "^9.0.0",
+    "chalk": "^5.6.2",
+    "inquirer": "^9.3.8",
     "ora": "^6.3.1"
   },
   "engines": {
     "node": ">=18"
   },
   "devDependencies": {
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.11"
   }
 }
