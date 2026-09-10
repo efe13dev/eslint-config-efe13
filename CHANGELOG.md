@@ -2,6 +2,10 @@
 
 Todas las notas de cambios para `eslint-config-efe13`.
 
+## [1.2.1] - 2026-09-10
+
+- fix: Pinea `typescript@~6.0.0` en todos los presets — `typescript-eslint` soporta `>=4.8.4 <6.1.0` y con `typescript@7` abortaba antes de evaluar cualquier regla (`npm run lint` y `--print-config` fallaban sin producir configuración).
+
 ## [1.2.0] - 2026-09-10
 
 - fix(backend-ts): Reemplaza `eslint-config-semistandard` por `neostandard`. Semistandard es config eslintrc legacy: su peer `eslint ^8` rompía la instalación con npm (`ERESOLVE` contra ESLint 9) y sus `.rules` solo contenían `semi`/`no-extra-semi`, con lo que el ruleset Standard nunca se aplicaba en flat config.

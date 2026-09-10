@@ -1,5 +1,6 @@
 // eslint@^9: neostandard, eslint-plugin-import, eslint-plugin-react y
 // eslint-plugin-jsx-a11y aún no soportan ESLint 10 — quitar el pin cuando lo hagan.
+// typescript@~6.0.0: typescript-eslint soporta <6.1.0 — TS 7 aborta el lint.
 export const depsByFramework = {
   nextjs: [
     "eslint@^9",
@@ -15,7 +16,7 @@ export const depsByFramework = {
     "eslint-plugin-react-hooks",
     "prettier",
     "prettier-plugin-tailwindcss",
-    "typescript",
+    "typescript@~6.0.0",
     "typescript-eslint",
     "globals",
   ],
@@ -30,7 +31,7 @@ export const depsByFramework = {
     "eslint-plugin-react-hooks",
     "prettier",
     "prettier-plugin-tailwindcss",
-    "typescript",
+    "typescript@~6.0.0",
     "typescript-eslint",
     "globals",
   ],
@@ -42,6 +43,6 @@ export const depsByFramework = {
     "eslint-plugin-prettier",
     "neostandard",
     "prettier",
-    "typescript",
+    "typescript@~6.0.0",
   ],
 };
