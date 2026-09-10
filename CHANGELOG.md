@@ -5,6 +5,7 @@ Todas las notas de cambios para `eslint-config-efe13`.
 ## [1.2.1] - 2026-09-10
 
 - fix: Pinea `typescript@~6.0.0` en todos los presets — `typescript-eslint` soporta `>=4.8.4 <6.1.0` y con `typescript@7` abortaba antes de evaluar cualquier regla (`npm run lint` y `--print-config` fallaban sin producir configuración).
+- feat: Instala `@typescript/native-preview` en todos los presets — `tsgo` (compilador nativo de TS 7) queda disponible para builds/typechecks rápidos mientras `typescript-eslint` no soporta TS 7.
 
 ## [1.2.0] - 2026-09-10
 

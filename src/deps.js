@@ -1,6 +1,8 @@
 // eslint@^9: neostandard, eslint-plugin-import, eslint-plugin-react y
 // eslint-plugin-jsx-a11y aún no soportan ESLint 10 — quitar el pin cuando lo hagan.
 // typescript@~6.0.0: typescript-eslint soporta <6.1.0 — TS 7 aborta el lint.
+// @typescript/native-preview instala tsgo (compilador nativo de TS 7) para
+// builds/typechecks rápidos mientras tanto.
 export const depsByFramework = {
   nextjs: [
     "eslint@^9",
@@ -17,6 +19,7 @@ export const depsByFramework = {
     "prettier",
     "prettier-plugin-tailwindcss",
     "typescript@~6.0.0",
+    "@typescript/native-preview",
     "typescript-eslint",
     "globals",
   ],
@@ -32,6 +35,7 @@ export const depsByFramework = {
     "prettier",
     "prettier-plugin-tailwindcss",
     "typescript@~6.0.0",
+    "@typescript/native-preview",
     "typescript-eslint",
     "globals",
   ],
@@ -44,5 +48,6 @@ export const depsByFramework = {
     "neostandard",
     "prettier",
     "typescript@~6.0.0",
+    "@typescript/native-preview",
   ],
 };
