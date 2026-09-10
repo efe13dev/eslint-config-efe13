@@ -28,7 +28,8 @@ Si tu proyecto fue creado con Vite, elimina el archivo `eslint.config.js` que Vi
 
 ### Nota para proyectos backend-ts
 
-- Asegúrate de tener un `tsconfig.json` en la raíz del proyecto; el preset usa lint con información de tipos (`parserOptions.project`).
+- El preset usa [neostandard](https://github.com/neostandard/neostandard) (`ts: true`), el sucesor de `standard`/`semistandard` compatible con flat config y ESLint 9.
+- Asegúrate de tener un `tsconfig.json` en la raíz del proyecto; el preset usa lint con información de tipos (`projectService`). Los archivos `.ts` sueltos de la raíz (`drizzle.config.ts`, `vitest.config.ts`, etc.) se lintan con el proyecto por defecto.
 - El preset apunta a entornos Node.js y también habilita APIs de `serviceworker` (para soportar `fetch`, `Request`, `Response` en runtimes tipo Bun/Workers si fuese necesario).
 
 ## Requisitos

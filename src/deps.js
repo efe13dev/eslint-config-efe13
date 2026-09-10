@@ -1,6 +1,8 @@
+// eslint@^9: neostandard, eslint-plugin-import, eslint-plugin-react y
+// eslint-plugin-jsx-a11y aún no soportan ESLint 10 — quitar el pin cuando lo hagan.
 export const depsByFramework = {
   nextjs: [
-    "eslint",
+    "eslint@^9",
     "@eslint/compat",
     "@next/eslint-plugin-next",
     "eslint-config-next",
@@ -18,7 +20,7 @@ export const depsByFramework = {
     "globals",
   ],
   vite: [
-    "eslint",
+    "eslint@^9",
     "@eslint/compat",
     "eslint-config-prettier",
     "eslint-plugin-import",
@@ -33,17 +35,12 @@ export const depsByFramework = {
     "globals",
   ],
   "backend-ts": [
-    "eslint",
+    "eslint@^9",
     "@eslint/compat",
-    "@typescript-eslint/eslint-plugin",
-    "@typescript-eslint/parser",
     "eslint-config-prettier",
-    "eslint-config-semistandard",
     "eslint-plugin-import",
-    "eslint-plugin-n",
     "eslint-plugin-prettier",
-    "eslint-plugin-promise",
-    "globals",
+    "neostandard",
     "prettier",
     "typescript",
   ],

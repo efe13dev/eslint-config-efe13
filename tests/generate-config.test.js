@@ -21,9 +21,10 @@ describe("generateEslintConfig", () => {
 
   it("genera config para backend-ts con los imports correctos", () => {
     const config = generateEslintConfig("backend-ts");
-    expect(config).toContain("@typescript-eslint/eslint-plugin");
-    expect(config).toContain("eslint-config-semistandard");
-    expect(config).toContain("eslint-plugin-n");
+    expect(config).toContain("neostandard");
+    expect(config).toContain("projectService");
+    expect(config).toContain("@typescript-eslint/");
+    expect(config).not.toContain("eslint-config-semistandard");
     expect(config).not.toContain("prettier-plugin-tailwindcss");
   });
 

@@ -240,46 +240,42 @@ export default [
 
 function generateBackendTsConfig() {
   return `import { fixupPluginRules } from "@eslint/compat";
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsparser from "@typescript-eslint/parser";
-import eslintConfigPrettier from "eslint-config-prettier";
-import semistandard from "eslint-config-semistandard";
+import { fileURLToPath } from "node:url";
 import importPlugin from "eslint-plugin-import";
-import nPlugin from "eslint-plugin-n";
+import neostandard from "neostandard";
 import prettierRecommended from "eslint-plugin-prettier/recommended";
-import promisePlugin from "eslint-plugin-promise";
-import globals from "globals";
 
 export default [
   {
     ignores: ["node_modules", "dist", "coverage", ".idea"],
   },
+
+  // Base: Standard + TypeScript (neostandard, sucesor flat-config de standard/semistandard)
+  // El formato (punto y coma incluido) lo maneja Prettier
+  ...neostandard({
+    ts: true,
+    noStyle: true,
+    env: ["node", "serviceworker"], // serviceworker: fetch, Request, Response
+    filesTs: ["**/*.mts", "**/*.cts"],
+  }),
+
+  // TypeScript: lint con información de tipos + reglas del proyecto
   {
-    files: ["**/*.ts"],
+    files: ["**/*.{ts,tsx,mts,cts}"],
     languageOptions: {
-      parser: tsparser,
       parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        // Lint con información de tipos
-        project: ["./tsconfig.json"],
-        tsconfigRootDir: process.cwd(),
-      },
-      globals: {
-        ...globals.node,
-        ...globals.es2021,
-        ...globals.serviceworker, // fetch, Request, Response
+        // Resuelve el tsconfig más cercano a cada archivo
+        projectService: {
+          // Archivos sueltos de la raíz: drizzle.config.ts, vitest.config.ts, ...
+          allowDefaultProject: ["*.ts", "*.tsx", "*.mts", "*.cts"],
+        },
+        tsconfigRootDir: fileURLToPath(new URL(".", import.meta.url)),
       },
     },
     plugins: {
-      "@typescript-eslint": tseslint,
       import: fixupPluginRules(importPlugin),
-      n: nPlugin,
-      promise: promisePlugin,
     },
     rules: {
-      ...semistandard.rules,
-
       // Adaptaciones para TS
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-empty-function": "off",
@@ -346,22 +342,21 @@ export default [
         "error",
         {
           devDependencies: [
-            "**/*.test.ts",
-            "**/*.spec.ts",
-            "drizzle.config.ts",
+            "**/*.test.{ts,mts,cts}",
+            "**/*.spec.{ts,mts,cts}",
+            "**/*.config.{ts,mts,cts}",
             "eslint.config.mjs",
-            "bunfig.toml",
           ],
         },
       ],
 
       // Promesas
       "promise/no-return-wrap": "error",
-      "promise/param-names": "error",
 
       // Node
       "n/no-missing-import": "off", // TS resuelve imports
       "n/no-process-exit": "warn",
+      "n/process-exit-as-throw": "off", // cubierto por no-process-exit; process.exit() es válido en scripts
       "n/shebang": "off",
       "n/no-unsupported-features/es-syntax": "off",
     },
@@ -387,8 +382,6 @@ export default [
       ],
     },
   },
-  // Desactivar reglas en conflicto con Prettier
-  eslintConfigPrettier,
 ];
 `;
 }

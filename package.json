@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-efe13",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "type": "module",
   "bin": {
     "eslint-config-efe13": "bin/index.js"

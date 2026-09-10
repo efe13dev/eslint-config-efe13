@@ -2,6 +2,16 @@
 
 Todas las notas de cambios para `eslint-config-efe13`.
 
+## [1.2.0] - 2026-09-10
+
+- fix(backend-ts): Reemplaza `eslint-config-semistandard` por `neostandard`. Semistandard es config eslintrc legacy: su peer `eslint ^8` rompía la instalación con npm (`ERESOLVE` contra ESLint 9) y sus `.rules` solo contenían `semi`/`no-extra-semi`, con lo que el ruleset Standard nunca se aplicaba en flat config.
+- fix(backend-ts): Usa `parserOptions.projectService` con `allowDefaultProject` en lugar de `project`, para que archivos TS fuera del `include` del tsconfig (`drizzle.config.ts`, `vitest.config.ts`, etc.) no rompan el lint.
+- fix(backend-ts): `tsconfigRootDir` anclado al propio `eslint.config.mjs` (`import.meta`) en lugar de `process.cwd()`.
+- feat(backend-ts): Se lintan también archivos `.mts`, `.cts` y `.tsx`.
+- chore(backend-ts): Desactiva `n/process-exit-as-throw` (queda cubierto por `n/no-process-exit: warn`; `process.exit()` es válido en scripts/CLIs).
+- chore(backend-ts): Reduce las dependencias instaladas — `eslint-plugin-n`, `eslint-plugin-promise`, `globals` y `typescript-eslint` vienen incluidos en `neostandard`.
+- fix: Instala `eslint@^9` en todos los presets — `neostandard`, `eslint-plugin-import`, `eslint-plugin-react` y `eslint-plugin-jsx-a11y` aún no declaran soporte para ESLint 10 (evita resoluciones rotas en pnpm/bun/yarn).
+
 ## [1.1.4] - 2026-09-09
 
 - chore: Renombra el paquete a `eslint-config-efe13`.
