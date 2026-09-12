@@ -16,4 +16,11 @@ describe("ensureLintScript", () => {
     expect(ensureLintScript(pkg)).toBe(false);
     expect(pkg.scripts.lint).toBe("eslint src");
   });
+
+  it("usa el script indicado cuando se pasa uno", () => {
+    const pkg = {};
+
+    expect(ensureLintScript(pkg, "biome check .")).toBe(true);
+    expect(pkg.scripts.lint).toBe("biome check .");
+  });
 });

@@ -2,6 +2,13 @@
 
 Todas las notas de cambios para `eslint-config-efe13`.
 
+## [1.3.0] - 2026-09-12
+
+- feat: Agrega la opción de usar Biome en lugar de ESLint + Prettier. El CLI ahora pregunta primero la herramienta; con Biome instala `@biomejs/biome`, genera `biome.json` y agrega `"lint": "biome check ."`.
+- feat(biome): Adapta la config al framework — `nextjs`/`vite` con dominios Next/React y directivas de Tailwind; `backend-ts` sin ellos. No pregunta framework: usa el detectado.
+- chore: `ensureLintScript` acepta el script a insertar (por defecto `eslint .`).
+- docs: Documenta la opción Biome en el README y agrega la keyword `biome`.
+
 ## [1.2.1] - 2026-09-10
 
 - fix: Pinea `typescript@~6.0.0` en todos los presets — `typescript-eslint` soporta `>=4.8.4 <6.1.0` y con `typescript@7` abortaba antes de evaluar cualquier regla (`npm run lint` y `--print-config` fallaban sin producir configuración).

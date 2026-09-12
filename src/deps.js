@@ -3,6 +3,10 @@
 // typescript@~6.0.0: typescript-eslint soporta <6.1.0 — TS 7 aborta el lint.
 // @typescript/native-preview instala tsgo (compilador nativo de TS 7) para
 // builds/typechecks rápidos mientras tanto.
+// biome: reemplaza ESLint + Prettier. El schema de biome.json está pinneado a
+// 2.5.13 — subir ambos a la vez cuando se actualice Biome.
+export const biomeDeps = ["@biomejs/biome@^2.5.13"];
+
 export const depsByFramework = {
   nextjs: [
     "eslint@^9",

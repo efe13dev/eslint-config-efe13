@@ -1,6 +1,6 @@
  # eslint-config-efe13
 
-CLI para configurar rápidamente ESLint + Prettier (Flat Config) en proyectos Next.js, Vite o backend-ts (Node/TypeScript).
+CLI para configurar rápidamente ESLint + Prettier (Flat Config) o Biome en proyectos Next.js, Vite o backend-ts (Node/TypeScript).
  
  Reglas de configuración inspiradas en Goncy.
 
@@ -22,6 +22,13 @@ bunx eslint-config-efe13
 
 El CLI intentará detectar el framework automáticamente. Si no puede detectarlo (o es ambiguo), te pedirá que selecciones uno (`nextjs` | `vite` | `backend-ts`) y hará la configuración automáticamente.
 
+Primero elige la herramienta:
+
+- **ESLint + Prettier**: genera `eslint.config.mjs` e instala las dependencias del preset del framework.
+- **Biome**: genera `biome.json` e instala `@biomejs/biome` (reemplaza ESLint + Prettier). No pregunta framework; usa el detectado para adaptar la config. En `backend-ts` omite los dominios de Next/React y las directivas de Tailwind.
+
+En ambos casos agrega el script `"lint"` a `package.json` (`eslint .` o `biome check .`) si aún no existe.
+
 ### Nota para proyectos Vite
 
 Si tu proyecto fue creado con Vite, elimina el archivo `eslint.config.js` que Vite genera por defecto. Este CLI creará `eslint.config.mjs` (Flat Config).
@@ -40,9 +47,10 @@ Si tu proyecto fue creado con Vite, elimina el archivo `eslint.config.js` que Vi
 ## ¿Qué hace?
 
 - Detecta tu gestor de paquetes.
+- Pregunta qué herramienta usar: ESLint + Prettier o Biome.
 - Instala las dependencias necesarias.
-- Genera `eslint.config.mjs` con configuración Flat + Prettier.
-- Añade el script `"lint": "eslint ."` a `package.json` si existe y aún no define `lint`.
+- Genera `eslint.config.mjs` (Flat + Prettier) o `biome.json` según la herramienta.
+- Añade el script `"lint"` (`eslint .` o `biome check .`) a `package.json` si existe y aún no define `lint`.
 
 ## Lint
 
