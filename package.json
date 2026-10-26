@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "type": "module",
   "bin": {
-    "eslint-config-efe13": "bin/index.js"
+    "lint-config": "bin/index.js"
   },
   "files": [
     "bin/",

@@ -5,6 +5,7 @@ Todas las notas de cambios para `eslint-config-efe13`.
 ## [1.4.0] - 2026-10-26
 
 - feat: Agrega la opción oxlint + Oxfmt. Genera `.oxlintrc.json` (reglas de los presets ESLint convertidas con `@oxlint/migrate`, sin las que ya aplica `correctness`) y `.oxfmtrc.json` (estilo Prettier + `sortImports` + `sortTailwindcss`), instala `oxlint`/`oxfmt` (+ `oxlint-tsgolint` en `backend-ts`) y agrega los scripts `lint` y `format`.
+- feat: El comando pasa a llamarse `lint-config` (el paquete sigue siendo `eslint-config-efe13`).
 - docs: Documenta la opción ox y el uso local con `npm link`.
 
 ## [1.3.0] - 2026-09-12

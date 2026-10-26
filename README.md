@@ -34,7 +34,7 @@ Agrega el script `"lint"` a `package.json` (`eslint .`, `biome check .` u `oxlin
 
 ```bash
 git clone https://github.com/efe13dev/eslint-config-efe13 && cd eslint-config-efe13
-npm install && npm link   # deja el comando eslint-config-efe13 disponible globalmente
+npm install && npm link   # deja el comando lint-config disponible globalmente
 # o, sin clonar:
 npx github:efe13dev/eslint-config-efe13
 ```
