@@ -1,6 +1,6 @@
 # Changelog
 
-Todas las notas de cambios para `eslint-config-efe13`.
+Todas las notas de cambios para `lint-config`.
 
 ## [1.5.0] - 2026-10-26
 

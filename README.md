@@ -1,4 +1,4 @@
- # eslint-config-efe13
+# lint-config
 
 CLI para configurar rápidamente ESLint + Prettier (Flat Config), Biome u oxlint + Oxfmt en proyectos Next.js, Vite o backend-ts (Node/TypeScript).
  
@@ -11,13 +11,13 @@ CLI para configurar rápidamente ESLint + Prettier (Flat Config), Biome u oxlint
 Ejecuta el CLI en la raíz de tu proyecto con tu gestor preferido:
 
 ```bash
-npx eslint-config-efe13
+npx github:efe13dev/lint-config
 # o
-pnpm dlx eslint-config-efe13
+pnpm dlx github:efe13dev/lint-config
 # o
-yarn dlx eslint-config-efe13
+yarn dlx github:efe13dev/lint-config
 # o
-bunx eslint-config-efe13
+bunx github:efe13dev/lint-config
 ```
 
 El CLI intentará detectar el framework automáticamente. Si no puede detectarlo (o es ambiguo), te pedirá que selecciones uno (`nextjs` | `vite` | `backend-ts`) y hará la configuración automáticamente.
@@ -31,13 +31,11 @@ Primero elige la herramienta:
 
 Agrega el script `"lint"` a `package.json` (`eslint .`, `biome check .` u `oxlint`) si aún no existe; con oxlint también `"format": "oxfmt"`.
 
-### Uso en local sin publicar
+### Uso en local
 
 ```bash
-git clone https://github.com/efe13dev/eslint-config-efe13 && cd eslint-config-efe13
+git clone https://github.com/efe13dev/lint-config && cd lint-config
 npm install && npm link   # deja el comando lint-config disponible globalmente
-# o, sin clonar:
-npx github:efe13dev/eslint-config-efe13
 ```
 
 ### Nota para proyectos Vite

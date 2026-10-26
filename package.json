@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-efe13",
+  "name": "lint-config",
   "version": "1.5.0",
   "type": "module",
   "bin": {
@@ -35,12 +35,12 @@
   "description": "Configuración de ESLint + Prettier, Biome u oxlint + Oxfmt inspirada en Goncy con un CLI para proyectos Next.js, Vite y backend-ts (Node/TypeScript).",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/efe13dev/eslint-config-efe13.git"
+    "url": "git+https://github.com/efe13dev/lint-config.git"
   },
   "bugs": {
-    "url": "https://github.com/efe13dev/eslint-config-efe13/issues"
+    "url": "https://github.com/efe13dev/lint-config/issues"
   },
-  "homepage": "https://github.com/efe13dev/eslint-config-efe13#readme",
+  "homepage": "https://github.com/efe13dev/lint-config#readme",
   "dependencies": {
     "chalk": "^5.6.2",
     "inquirer": "^9.3.8",

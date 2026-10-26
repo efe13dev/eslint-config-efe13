@@ -2,7 +2,7 @@
 node_modules/
 
 # Paquetes generados por npm pack
-eslint-config-efe13-*.tgz
+lint-config-*.tgz
 
 # Logs
 npm-debug.log*
