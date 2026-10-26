@@ -27,6 +27,7 @@ Primero elige la herramienta:
 - **ESLint + Prettier**: genera `eslint.config.mjs` e instala las dependencias del preset del framework.
 - **Biome**: genera `biome.json` e instala `@biomejs/biome` (reemplaza ESLint + Prettier). No pregunta framework; usa el detectado para adaptar la config. En `backend-ts` omite los dominios de Next/React y las directivas de Tailwind.
 - **oxlint + Oxfmt**: genera `.oxlintrc.json` y `.oxfmtrc.json` e instala `oxlint` y `oxfmt` (más `oxlint-tsgolint` en `backend-ts`, que usa reglas type-aware). Son las mismas reglas de los presets ESLint convertidas con `@oxlint/migrate`, con `correctness` como `error`. `import/order` pasa a `sortImports` de Oxfmt y `prettier-plugin-tailwindcss` a `sortTailwindcss`. Se pierden `padding-line-between-statements` (oxlint no la implementa) y en `backend-ts` también `n/no-process-exit` e `import/no-extraneous-dependencies`.
+  - **Con Vite+** (el `vite.config` importa de `vite-plus`): `vp lint`/`vp fmt` solo leen los bloques `lint` y `fmt` de `vite.config.ts`, así que no instala nada ni crea `.oxlintrc.json`/`.oxfmtrc.json`: mezcla las reglas y el formato en esos bloques (respeta lo que ya traiga la plantilla de `vp create`, como las reglas de React) y añade `"format": "vp fmt"`. Si el bloque no es un literal que se pueda editar, imprime los bloques para pegarlos a mano.
 
 Agrega el script `"lint"` a `package.json` (`eslint .`, `biome check .` u `oxlint`) si aún no existe; con oxlint también `"format": "oxfmt"`.
 

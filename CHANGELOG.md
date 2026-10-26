@@ -2,6 +2,10 @@
 
 Todas las notas de cambios para `eslint-config-efe13`.
 
+## [1.5.0] - 2026-10-26
+
+- feat: En proyectos Vite+ la opción oxlint + Oxfmt escribe las reglas y el formato en los bloques `lint` y `fmt` de `vite.config.ts` (lo único que leen `vp lint`/`vp fmt`) en vez de crear `.oxlintrc.json`/`.oxfmtrc.json`, y no instala dependencias.
+
 ## [1.4.0] - 2026-10-26
 
 - feat: Agrega la opción oxlint + Oxfmt. Genera `.oxlintrc.json` (reglas de los presets ESLint convertidas con `@oxlint/migrate`, sin las que ya aplica `correctness`) y `.oxfmtrc.json` (estilo Prettier + `sortImports` + `sortTailwindcss`), instala `oxlint`/`oxfmt` (+ `oxlint-tsgolint` en `backend-ts`) y agrega los scripts `lint` y `format`.
