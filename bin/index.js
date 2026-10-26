@@ -6,6 +6,7 @@ import inquirer from "inquirer";
 import { createRequire } from "module";
 import ora from "ora";
 
+import { applyVitePlusConfig, mergeFmt, mergeLint, toLiteral } from "../src/apply-vite-plus-config.js";
 import { biomeDeps, depsByFramework, oxDepsByFramework } from "../src/deps.js";
 import { detectFramework } from "../src/detect-framework.js";
 import { detectPackageManager } from "../src/detect-package-manager.js";
@@ -49,6 +50,20 @@ async function main() {
       default: "nextjs",
     });
     framework = response.framework;
+  }
+
+  // Vite+ solo lee los bloques lint/fmt de vite.config: ahí van las reglas y no hace falta instalar nada.
+  const viteConfigPath =
+    isOx &&
+    ["vite.config.ts", "vite.config.mts", "vite.config.js", "vite.config.mjs"].find(
+      (file) => fs.existsSync(file) && fs.readFileSync(file, "utf8").includes("vite-plus"),
+    );
+
+  if (viteConfigPath) {
+    configureVitePlus(viteConfigPath, framework);
+    addScripts("vp lint", "vp fmt");
+    console.log(chalk.bold.blue("\n🎉 ¡Configuración completada! Ejecuta el script format.\n"));
+    return;
   }
 
   // Crear archivo de config (con confirmación si ya existe)
@@ -131,7 +146,31 @@ async function main() {
     process.exit(1);
   }
 
-  // Añadir script lint a package.json
+  addScripts(isBiome ? "biome check ." : isOx ? "oxlint" : "eslint .", isOx && "oxfmt");
+
+  console.log(chalk.bold.blue("\n🎉 ¡Configuración completada con éxito!\n"));
+}
+
+function configureVitePlus(viteConfigPath, framework) {
+  console.log(chalk.green(`Detectado Vite+: se configuran los bloques lint y fmt de ${viteConfigPath}`));
+
+  const updated = applyVitePlusConfig(fs.readFileSync(viteConfigPath, "utf8"), framework);
+
+  if (updated) {
+    fs.writeFileSync(viteConfigPath, updated);
+    console.log(chalk.green(`${viteConfigPath} actualizado con éxito`));
+    return;
+  }
+
+  console.warn(
+    chalk.yellow(`No se pudo editar ${viteConfigPath} automáticamente. Pega esto en defineConfig:\n`),
+  );
+  console.log(`  lint: ${toLiteral(mergeLint({}, framework))},`);
+  console.log(`  fmt: ${toLiteral(mergeFmt({}, framework))},`);
+}
+
+// Añade los scripts lint/format a package.json si no existen.
+function addScripts(lintScript, formatScript) {
   try {
     const pkgPath = "package.json";
     if (!fs.existsSync(pkgPath)) {
@@ -139,11 +178,10 @@ async function main() {
     } else {
       const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
 
-      const lintScript = isBiome ? "biome check ." : isOx ? "oxlint" : "eslint .";
       const lintAdded = ensureLintScript(pkg, lintScript);
-      const formatAdded = isOx && !Object.hasOwn(pkg.scripts, "format");
+      const formatAdded = Boolean(formatScript) && !Object.hasOwn(pkg.scripts, "format");
 
-      if (formatAdded) pkg.scripts.format = "oxfmt";
+      if (formatAdded) pkg.scripts.format = formatScript;
       if (lintAdded || formatAdded) fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
       console.log(
@@ -156,8 +194,6 @@ async function main() {
   } catch {
     console.warn(chalk.yellow("No se pudo modificar package.json para añadir el script lint."));
   }
-
-  console.log(chalk.bold.blue("\n🎉 ¡Configuración completada con éxito!\n"));
 }
 
 main();
