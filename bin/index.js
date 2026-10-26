@@ -6,12 +6,13 @@ import inquirer from "inquirer";
 import { createRequire } from "module";
 import ora from "ora";
 
-import { biomeDeps, depsByFramework } from "../src/deps.js";
+import { biomeDeps, depsByFramework, oxDepsByFramework } from "../src/deps.js";
 import { detectFramework } from "../src/detect-framework.js";
 import { detectPackageManager } from "../src/detect-package-manager.js";
 import { ensureLintScript } from "../src/ensure-lint-script.js";
 import { generateBiomeConfig } from "../src/generate-biome-config.js";
 import { generateEslintConfig } from "../src/generate-config.js";
+import { generateOxfmtConfig, generateOxlintConfig } from "../src/generate-ox-config.js";
 
 async function main() {
   console.log(chalk.bold.blue("\n🚀 Configurador de lint/formato\n"));
@@ -26,11 +27,13 @@ async function main() {
     choices: [
       { name: "ESLint + Prettier", value: "eslint" },
       { name: "Biome", value: "biome" },
+      { name: "oxlint + Oxfmt", value: "ox" },
     ],
     default: "eslint",
   });
 
   const isBiome = tool === "biome";
+  const isOx = tool === "ox";
 
   const detectedFramework = detectFramework();
   let framework = detectedFramework;
@@ -49,7 +52,7 @@ async function main() {
   }
 
   // Crear archivo de config (con confirmación si ya existe)
-  const configPath = isBiome ? "biome.json" : "eslint.config.mjs";
+  const configPath = isBiome ? "biome.json" : isOx ? ".oxlintrc.json" : "eslint.config.mjs";
   const configExists = fs.existsSync(configPath);
 
   if (configExists) {
@@ -69,7 +72,11 @@ async function main() {
   const spinner = ora("Instalando dependencias...").start();
 
   try {
-    const deps = isBiome ? biomeDeps : depsByFramework[framework];
+    const deps = isBiome
+      ? biomeDeps
+      : isOx
+        ? oxDepsByFramework[framework]
+        : depsByFramework[framework];
     const installCmd =
       {
         npm: "npm install -D",
@@ -87,8 +94,8 @@ async function main() {
 
   // overrides/resolutions del proyecto ganan al pin typescript@~6.0.0 y
   // typescript-eslint aborta con TS 7 — avisar si quedó instalado TS >= 7.
-  // Solo aplica a la ruta ESLint: Biome no usa typescript-eslint.
-  if (!isBiome) {
+  // Solo aplica a la ruta ESLint: Biome y ox no usan typescript-eslint.
+  if (tool === "eslint") {
     try {
       const req = createRequire(`${process.cwd()}/package.json`);
       const tsVersion = req("typescript/package.json").version;
@@ -109,8 +116,13 @@ async function main() {
   try {
     fs.writeFileSync(
       configPath,
-      isBiome ? generateBiomeConfig(framework) : generateEslintConfig(framework),
+      isBiome
+        ? generateBiomeConfig(framework)
+        : isOx
+          ? generateOxlintConfig(framework)
+          : generateEslintConfig(framework),
     );
+    if (isOx) fs.writeFileSync(".oxfmtrc.json", generateOxfmtConfig(framework));
     console.log(
       chalk.green(`Archivo ${configPath} ${configExists ? "sobreescrito" : "creado"} con éxito`),
     );
@@ -127,12 +139,19 @@ async function main() {
     } else {
       const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
 
-      if (ensureLintScript(pkg, isBiome ? "biome check ." : "eslint .")) {
-        fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-        console.log(chalk.green("Script 'lint' agregado a package.json"));
-      } else {
-        console.log(chalk.yellow("Se mantuvo el script 'lint' existente."));
-      }
+      const lintScript = isBiome ? "biome check ." : isOx ? "oxlint" : "eslint .";
+      const lintAdded = ensureLintScript(pkg, lintScript);
+      const formatAdded = isOx && !Object.hasOwn(pkg.scripts, "format");
+
+      if (formatAdded) pkg.scripts.format = "oxfmt";
+      if (lintAdded || formatAdded) fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+
+      console.log(
+        lintAdded
+          ? chalk.green("Script 'lint' agregado a package.json")
+          : chalk.yellow("Se mantuvo el script 'lint' existente."),
+      );
+      if (formatAdded) console.log(chalk.green("Script 'format' agregado a package.json"));
     }
   } catch {
     console.warn(chalk.yellow("No se pudo modificar package.json para añadir el script lint."));

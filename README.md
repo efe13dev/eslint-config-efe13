@@ -1,6 +1,6 @@
  # eslint-config-efe13
 
-CLI para configurar rápidamente ESLint + Prettier (Flat Config) o Biome en proyectos Next.js, Vite o backend-ts (Node/TypeScript).
+CLI para configurar rápidamente ESLint + Prettier (Flat Config), Biome u oxlint + Oxfmt en proyectos Next.js, Vite o backend-ts (Node/TypeScript).
  
  Reglas de configuración inspiradas en Goncy.
 
@@ -26,8 +26,18 @@ Primero elige la herramienta:
 
 - **ESLint + Prettier**: genera `eslint.config.mjs` e instala las dependencias del preset del framework.
 - **Biome**: genera `biome.json` e instala `@biomejs/biome` (reemplaza ESLint + Prettier). No pregunta framework; usa el detectado para adaptar la config. En `backend-ts` omite los dominios de Next/React y las directivas de Tailwind.
+- **oxlint + Oxfmt**: genera `.oxlintrc.json` y `.oxfmtrc.json` e instala `oxlint` y `oxfmt` (más `oxlint-tsgolint` en `backend-ts`, que usa reglas type-aware). Son las mismas reglas de los presets ESLint convertidas con `@oxlint/migrate`, con `correctness` como `error`. `import/order` pasa a `sortImports` de Oxfmt y `prettier-plugin-tailwindcss` a `sortTailwindcss`. Se pierden `padding-line-between-statements` (oxlint no la implementa) y en `backend-ts` también `n/no-process-exit` e `import/no-extraneous-dependencies`.
 
-En ambos casos agrega el script `"lint"` a `package.json` (`eslint .` o `biome check .`) si aún no existe.
+Agrega el script `"lint"` a `package.json` (`eslint .`, `biome check .` u `oxlint`) si aún no existe; con oxlint también `"format": "oxfmt"`.
+
+### Uso en local sin publicar
+
+```bash
+git clone https://github.com/efe13dev/eslint-config-efe13 && cd eslint-config-efe13
+npm install && npm link   # deja el comando lint-config disponible globalmente
+# o, sin clonar:
+npx github:efe13dev/eslint-config-efe13
+```
 
 ### Nota para proyectos Vite
 
@@ -47,9 +57,9 @@ Si tu proyecto fue creado con Vite, elimina el archivo `eslint.config.js` que Vi
 ## ¿Qué hace?
 
 - Detecta tu gestor de paquetes.
-- Pregunta qué herramienta usar: ESLint + Prettier o Biome.
+- Pregunta qué herramienta usar: ESLint + Prettier, Biome u oxlint + Oxfmt.
 - Instala las dependencias necesarias.
-- Genera `eslint.config.mjs` (Flat + Prettier) o `biome.json` según la herramienta.
+- Genera `eslint.config.mjs` (Flat + Prettier), `biome.json` o `.oxlintrc.json` + `.oxfmtrc.json` según la herramienta.
 - Añade el script `"lint"` (`eslint .` o `biome check .`) a `package.json` si existe y aún no define `lint`.
 
 ## Lint
