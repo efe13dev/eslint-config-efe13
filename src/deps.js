@@ -7,6 +7,16 @@
 // 2.5.13 — subir ambos a la vez cuando se actualice Biome.
 export const biomeDeps = ["@biomejs/biome@^2.5.13"];
 
+// ox: oxlint + oxfmt reemplazan ESLint + Prettier. backend-ts usa reglas
+// type-aware (no-floating-promises, no-misused-promises) que necesitan oxlint-tsgolint.
+const oxBase = ["oxlint", "oxfmt"];
+
+export const oxDepsByFramework = {
+  nextjs: oxBase,
+  vite: oxBase,
+  "backend-ts": [...oxBase, "oxlint-tsgolint"],
+};
+
 export const depsByFramework = {
   nextjs: [
     "eslint@^9",
